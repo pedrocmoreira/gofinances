@@ -110,6 +110,7 @@ export function Dashboard() {
 
         const lastTransactionEntries = getLastTransactionDate(transactions, 'positive');
         const lastTransactionExpensives = getLastTransactionDate(transactions, 'negative');
+            //Arrumar styled component do card
         const totalInterval = `                                    01 a ${lastTransactionEntries}`;
 
         let total = entriesTotal - expensiveTotal;
