@@ -55,16 +55,13 @@ export function Dashboard() {
         collection: DataListProps[],
         type: 'positive' | 'negative'
     ) {
-        const lastTransactionEntries =
+        const lastTransaction =new Date(
             Math.max.apply(Math, collection
                 .filter(transaction => transaction.type === type)
-                .map(transaction => new Date(transaction.date).getTime()));
+                .map(transaction => new Date(transaction.date).getTime())));
 
-        return Intl.DateTimeFormat('pt-BR', {
-            day: '2-digit',
-            month: '2-digit',
-            year: '2-digit'
-        }).format(new Date(lastTransactionEntries));
+        return `${lastTransaction.getDate()} de ${lastTransaction.toLocaleString('pt-BR',
+            {month: 'long'})}`;
     }
 
     async function loadTransactions() {
@@ -113,6 +110,7 @@ export function Dashboard() {
 
         const lastTransactionEntries = getLastTransactionDate(transactions, 'positive');
         const lastTransactionExpensives = getLastTransactionDate(transactions, 'negative');
+        const totalInterval = `                                    01 a ${lastTransactionEntries}`;
 
         let total = entriesTotal - expensiveTotal;
 
@@ -122,21 +120,21 @@ export function Dashboard() {
                     style: 'currency',
                     currency: 'BRL'
                 }),
-                lastTransaction: lastTransactionEntries,
+                lastTransaction: `                          Última entrada dia ${lastTransactionEntries}`,
             },
             expensives: {
                 amount: expensiveTotal.toLocaleString('pt-BR', {
                     style: 'currency',
                     currency: 'BRL'
                 }),
-                lastTransaction: lastTransactionExpensives
+                lastTransaction: `                                         Última saída dia ${lastTransactionExpensives}`
             },
             total: {
                 amount: total.toLocaleString('pt-BR', {
                     style: 'currency',
                     currency: 'BRL',
                 }),
-                lastTransaction: ' '
+                lastTransaction: totalInterval
             }
         });
         setIsLoading(false);
@@ -197,7 +195,7 @@ export function Dashboard() {
                                 type="total"
                                 title="Total"
                                 amount={highlightData.total.amount}
-                                lastTransaction="01 à 16 de abril"
+                                lastTransaction={highlightData.total.lastTransaction}
                             />
                         </HighlightCards>
 
