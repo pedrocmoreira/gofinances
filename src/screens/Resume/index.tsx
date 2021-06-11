@@ -23,6 +23,8 @@ interface CategoryData {
     name: string;
     total: string;
     color: string;
+    percentFormatted: string;
+    percent: number;
 }
 
 export function Resume() {
@@ -35,6 +37,11 @@ export function Resume() {
 
         const expensives = responseFormatted
             .filter((expensive: TransactionData) => expensive.type === 'negative');
+
+        const expensivesTotal = expensives
+            .reduce((accumulator: number, item: TransactionData) => {
+                return accumulator + Number(expensives.amount);
+            }, 0);
 
         const totalBycategory: CategoryData[] = [];
 
@@ -54,13 +61,20 @@ export function Resume() {
                     .toLocaleString('pt-BR', {
                         style: 'currency',
                         currency: 'BRL'
-                    })
+                });
+                
+                //Faço a conta de porcentagem e mostro essa porcentagem arredondada com o tofixed
+                const percent = (categorySum / expensivesTotal * 100);
+                const percentFormatted = `${percent.toFixed(0)}%`;
+
 
                 totalBycategory.push({
                     key: category.key,
                     name: category.name,
                     color: category.color,
                     total,
+                    percent,
+                    percentFormatted
                 });
             }
         });
@@ -79,17 +93,17 @@ export function Resume() {
                 <Title>Resumo por categoria</Title>
             </Header>
             <Content>
-            {
-                totalByCategories.map(item => (
-                    <HistoryCard
-                    //Como são poucos items não é preciso utilizar uma Flatlist
-                        key={item.key}
-                        title={item.name}
-                        amount={item.total}
-                        color={item.color}
-                    />
-                ))
-            }
+                {
+                    totalByCategories.map(item => (
+                        <HistoryCard
+                            //Como são poucos items não é preciso utilizar uma Flatlist
+                            key={item.key}
+                            title={item.name}
+                            amount={item.total}
+                            color={item.color}
+                        />
+                    ))
+                }
             </Content>
         </Container>
     );
