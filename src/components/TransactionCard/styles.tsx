@@ -22,7 +22,7 @@ export const Title = styled.Text`
 `;
 export const Amount = styled.Text<TransactionProps>`
     font-family: ${({ theme }) => theme.fonts.regular};
-    font-size: ${RFValue(20)};
+    font-size: ${RFValue(20)}px;
     margin-top: 2px;
 
     color: ${({ theme, type }) => 
@@ -41,7 +41,7 @@ export const Category = styled.View`
 `;
 export const Icon = styled(Feather)`
     color: ${({ theme }) => theme.colors.text};
-    font-size: ${RFValue(20)};
+    font-size: ${RFValue(20)}px;
 `;
 export const CategoryName = styled.Text`
     font-size: ${RFValue(14)}px;
