@@ -19,6 +19,8 @@ import {
 //componentes próprios
 import theme from './src/global/styles/theme';
 import { AppRoutes } from './src/routes/app.routes';
+import { SignIn } from './src/screens/SignIn';
+import { AuthProvider } from './src/Hooks/Auth';
 
 
 export default function App() {
@@ -29,15 +31,17 @@ export default function App() {
   });
 
   //Se a fonte não foi carregada segure a tela de splash
-  if(!fontsLoaded){
-    return <AppLoading/>
+  if (!fontsLoaded) {
+    return <AppLoading />
   }
 
   return (
     <ThemeProvider theme={theme}>
       <NavigationContainer>
         <StatusBar barStyle="light-content" />
-        <AppRoutes />
+        <AuthProvider> 
+          <SignIn />
+        </AuthProvider>
       </NavigationContainer>
     </ThemeProvider>
   )
