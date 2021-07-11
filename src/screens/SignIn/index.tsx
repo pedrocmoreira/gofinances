@@ -1,5 +1,5 @@
-import React from 'react';
-import { Alert } from 'react-native';
+import React, { useState } from 'react';
+import { ActivityIndicator, Alert } from 'react-native';
 import { RFValue } from 'react-native-responsive-fontsize';
 
 import AppleSvg from '../../assets/apple.svg';
@@ -9,6 +9,7 @@ import LogoSvg from '../../assets/logo.svg';
 import { SignInSocialButton } from '../../components/SignInSocialButton';
 
 import { useAuth } from '../../Hooks/Auth';
+import { useTheme } from 'styled-components';
 
 import {
     Container,
@@ -20,32 +21,40 @@ import {
     FooterWrapper
 } from './styles';
 
-export function SignIn(){
-    const { user, signInWithGoogle, signInWithApple }= useAuth();
+export function SignIn() {
+    const [isLoading, setIsLoading] = useState(false);
+    const { signInWithGoogle, signInWithApple } = useAuth();
 
-    async function handleSignInWithGoogle(){
+    const theme = useTheme();
+
+
+    async function handleSignInWithGoogle() {
         try {
-            await signInWithGoogle();
+            setIsLoading(true);
+            return await signInWithGoogle();
         } catch (error) {
             console.log(error);
             Alert.alert('Não foi possível conectar a conta Google');
-        }
+            setIsLoading(false);
+        }    
     }
 
-    async function handleSignInWithApple(){
+    async function handleSignInWithApple() {
         try {
-            await signInWithApple();
+            setIsLoading(true);
+            return await signInWithApple();
         } catch (error) {
             console.log(error);
             Alert.alert('Não foi possível conectar a conta Google');
-        }
+            setIsLoading(false);
+        } 
     }
 
-    return(
+    return (
         <Container>
             <Header>
                 <TitleWrapper>
-                    <LogoSvg 
+                    <LogoSvg
                         width={RFValue(120)}
                         height={RFValue(68)}
                     />
@@ -67,12 +76,16 @@ export function SignIn(){
                         svg={GoogleSvg}
                         onPress={handleSignInWithGoogle}
                     />
-                    <SignInSocialButton 
+                    <SignInSocialButton
                         title="Entrar com Apple"
                         svg={AppleSvg}
                         onPress={handleSignInWithApple}
                     />
                 </FooterWrapper>
+                {isLoading && <ActivityIndicator
+                    color={theme.colors.shape}
+                    style={{ margin: 18 }}
+                />}
             </Footer>
         </Container>
     );

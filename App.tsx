@@ -17,7 +17,7 @@ import {
 
 //componentes próprios
 import theme from './src/global/styles/theme';
-import { AuthProvider } from './src/Hooks/Auth';
+import { AuthProvider, useAuth } from './src/Hooks/Auth';
 import { Routes } from './src/routes';
 
 
@@ -28,8 +28,10 @@ export default function App() {
     Poppins_700Bold
   });
 
+  const { userStorageLoading } = useAuth();
+
   //Se a fonte não foi carregada segure a tela de splash
-  if (!fontsLoaded) {
+  if (!fontsLoaded || userStorageLoading) {
     return <AppLoading />
   }
 
