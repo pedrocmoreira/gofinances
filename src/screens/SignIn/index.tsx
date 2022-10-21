@@ -23,7 +23,7 @@ import {
 
 export function SignIn() {
     const [isLoading, setIsLoading] = useState(false);
-    const { signInWithGoogle, signInWithApple } = useAuth();
+    const { signInWithGoogle, signInWithApple, signOut } = useAuth();
 
     const theme = useTheme();
 
